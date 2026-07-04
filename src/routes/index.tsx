@@ -1,146 +1,55 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { useTheme } from "@/components/site/theme-provider";
-import {
-  Moon,
-  Sun,
-  ArrowRight,
-  Sparkles,
-  MessagesSquare,
-  Workflow,
-  Bot,
-  Plug,
-  BarChart3,
-  Inbox,
-  ShieldCheck,
-  Mail,
-} from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 
-import requestsHub from "@/assets/erra-requests-hub.png.asset.json";
-import integrationsHub from "@/assets/erra-integrations-hub.png.asset.json";
-import aiChatbot from "@/assets/erra-ai-chatbot.png.asset.json";
-import resourcesHub from "@/assets/erra-resources-hub.png.asset.json";
-import billing from "@/assets/erra-billing.png.asset.json";
-import reportsMetrics from "@/assets/erra-reports-metrics.png.asset.json";
-import automationBenefit from "@/assets/erra-automation-benefit.png.asset.json";
-import automationSequence from "@/assets/erra-automation-sequence.png.asset.json";
-import automationLibrary from "@/assets/erra-automation-library.png.asset.json";
-
-const TITLE = "ERRA. Automation for service-based businesses.";
-const DESC =
-  "ERRA is an automation platform for service-based businesses. Client intake, follow-ups, reviews, chatbot, voice AI, and 37 integrations from one dashboard. Public product showcase.";
+import dashboardAsset from "@/assets/erra-dashboard.png.asset.json";
+import requestsActiveAsset from "@/assets/erra-requests-active.png.asset.json";
+import requestsUpcomingAsset from "@/assets/erra-requests-upcoming.png.asset.json";
+import submitRequestAsset from "@/assets/erra-submit-request.png.asset.json";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
+  component: Landing,
 });
 
-const NAV = [
-  { href: "#what", label: "What it is" },
-  { href: "#how", label: "How it works" },
-  { href: "#tour", label: "Product tour" },
-  { href: "#integrations", label: "Integrations" },
-  { href: "#about", label: "About" },
-];
+const CONTACT = "mailto:hello@erra.app";
 
-function Index() {
+function BrowserFrame({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans">
-      <TopRibbon />
-      <StickyNav />
-      <main>
-        <Hero />
-        <WhatItIs />
-        <HowItWorks />
-        <ProductTour />
-        <Integrations />
-        <About />
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-function TopRibbon() {
-  return (
-    <div className="w-full bg-primary text-primary-foreground text-xs">
-      <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-center gap-2 text-center">
-        <Sparkles className="h-3.5 w-3.5" />
-        <span className="font-medium">
-          Public showcase of ERRA, a live SaaS product. Screens shown are the real product.
-        </span>
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+      <div className="flex items-center gap-1.5 border-b border-border bg-muted/50 px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+        <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+        <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
       </div>
+      <img src={src} alt={alt} className="block w-full" loading="lazy" />
     </div>
   );
 }
 
 function Wordmark() {
   return (
-    <a href="#top" className="flex items-center gap-2 group">
-      <span
-        className="text-2xl font-bold italic tracking-tight text-primary"
-      >
-        ERRA
-      </span>
+    <a href="#top" className="text-2xl font-bold tracking-tight text-primary">
+      ERRA
     </a>
   );
 }
 
-function StickyNav() {
-  const { theme, toggle } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+function Header() {
   return (
-    <header
-      id="top"
-      className={`sticky top-0 z-40 transition-all ${
-        scrolled ? "surface-glass shadow-soft" : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Wordmark />
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-accent/40 transition"
-            >
-              {n.label}
-            </a>
-          ))}
+        <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
+          <a href="#product" className="transition hover:text-foreground">Product</a>
+          <a href="#how" className="transition hover:text-foreground">How it works</a>
+          <a href="#features" className="transition hover:text-foreground">Features</a>
+          <a href="#contact" className="transition hover:text-foreground">Contact</a>
         </nav>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggle}
-            aria-label="Toggle theme"
-            className="p-2 rounded-full border border-border hover:bg-accent/40 transition"
-          >
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
-          <a
-            href="#about"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition"
-          >
-            Get in touch <ArrowRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+        <a
+          href={CONTACT}
+          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+        >
+          Request access <ArrowRight className="h-3.5 w-3.5" />
+        </a>
       </div>
     </header>
   );
@@ -148,344 +57,237 @@ function StickyNav() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden gradient-hero">
-      <div className="relative mx-auto max-w-7xl px-4 pt-16 md:pt-24 pb-20 md:pb-28">
-        <div className="max-w-3xl">
-          <div className="mock-badge mb-6">Business Automation Platform</div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-foreground">
-            Your business,{" "}
-            <span className="gradient-text">running smoothly</span>.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            ERRA is an automation platform built for service-based businesses.
-            Studios, clinics, agencies, med-spas, and salons use it to handle
-            client intake, follow-ups, reviews, re-engagement, chatbot and voice
-            AI, plus 37 platform integrations from one dashboard.
+    <section id="top" className="border-b border-border/60">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
+            Business Automation Platform
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
+          <h1 className="mt-4 text-5xl font-bold tracking-tight text-foreground md:text-6xl">
+            Your business, running smoothly.
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+            ERRA is automation for service based businesses. Submit a request, we build the
+            workflow, your business keeps moving.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
-              href="#tour"
-              className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-elegant hover:opacity-90 transition"
+              href={CONTACT}
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-90"
             >
-              See the product <ArrowRight className="h-4 w-4" />
+              Request access <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="#about"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 backdrop-blur px-6 py-3 text-sm font-semibold hover:bg-accent/40 transition"
+              href="#product"
+              className="inline-flex items-center rounded-full border border-input bg-background px-6 py-3 text-sm font-medium text-foreground transition hover:bg-accent"
             >
-              Get in touch
+              See the product
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1.5"><Workflow className="h-3.5 w-3.5" /> 246 prebuilt automations</span>
-            <span className="flex items-center gap-1.5"><Plug className="h-3.5 w-3.5" /> 37 integrations</span>
-            <span className="flex items-center gap-1.5"><Bot className="h-3.5 w-3.5" /> AI chatbot and voice</span>
-          </div>
+        </div>
+        <div className="mx-auto mt-16 max-w-5xl">
+          <BrowserFrame src={dashboardAsset.url} alt="ERRA dashboard" />
         </div>
       </div>
     </section>
   );
 }
 
-function Section({
-  id,
-  eyebrow,
-  title,
-  lead,
-  children,
-  className = "",
-}: {
-  id: string;
-  eyebrow?: string;
-  title?: string;
-  lead?: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <section id={id} className={`scroll-mt-24 py-20 md:py-24 ${className}`}>
-      <div className="mx-auto max-w-7xl px-4">
-        {(eyebrow || title || lead) && (
-          <div className="max-w-3xl mb-12">
-            {eyebrow && <div className="mock-badge mb-4">{eyebrow}</div>}
-            {title && (
-              <h2 className="text-3xl md:text-5xl font-bold text-foreground">
-                {title}
-              </h2>
-            )}
-            {lead && (
-              <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{lead}</p>
-            )}
-          </div>
-        )}
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function WhatItIs() {
-  const pillars = [
+function ValueProps() {
+  const items = [
     {
-      icon: Workflow,
-      title: "Prebuilt automation library",
-      body: "246 ready-to-run flows across SMS, email, chatbot, and AI. Tag by Communication, Retention, or Lead Gen and activate in one click.",
+      title: "Focused request queue",
+      body: "One place to submit, track, and approve every automation your business needs.",
     },
     {
-      icon: Inbox,
-      title: "Client Requests Hub",
-      body: "A kanban of every active, in-review, and completed request. Full conversation history per client, so nothing gets dropped.",
+      title: "Prebuilt automations",
+      body: "A library of ready to deploy workflows built for service businesses.",
     },
     {
-      icon: Bot,
-      title: "AI Tools built in",
-      body: "Chatbot and Voice AI trained on your business. Answer FAQs, book appointments, and route conversations 24/7.",
+      title: "AI tools that ship",
+      body: "Chatbot and voice AI wired into your requests, not a separate silo.",
     },
   ];
   return (
-    <Section
-      id="what"
-      eyebrow="What it is"
-      title="One dashboard for the systems behind your business."
-      lead="ERRA handles the behind-the-scenes work so operators can focus on serving clients."
-    >
-      <div className="grid md:grid-cols-3 gap-4">
-        {pillars.map((c) => (
-          <div key={c.title} className="rounded-2xl border border-border gradient-card p-6 shadow-soft">
-            <c.icon className="h-6 w-6 text-primary" />
-            <h3 className="mt-4 text-lg font-semibold text-foreground">{c.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.body}</p>
-          </div>
-        ))}
+    <section id="product" className="border-b border-border/60">
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="grid gap-6 md:grid-cols-3">
+          {items.map((it) => (
+            <div key={it.title} className="rounded-2xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold text-foreground">{it.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{it.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
 function HowItWorks() {
   const steps = [
-    { n: "1", title: "Client triggers an event", body: "Books an appointment, submits a form, sends an Instagram DM, or misses a visit." },
-    { n: "2", title: "ERRA runs the matching automation", body: "The right flow fires from the library. SMS, email, chatbot, or AI, in the right order." },
-    { n: "3", title: "Follow-ups happen automatically", body: "Confirmations, prep instructions, review requests, and re-engagement, on schedule." },
-    { n: "4", title: "Everything lands in Requests Hub", body: "Every client thread with full conversation history, ready for the team to jump in." },
+    { n: "01", t: "Submit a request", d: "Pick a request type, describe the outcome, attach files, choose the source." },
+    { n: "02", t: "We build and review", d: "72 hour turnaround. Your request moves through Active, Waiting on Review, then Approved." },
+    { n: "03", t: "Approve and go live", d: "Sign off in one click. The workflow runs, and your queue moves to the next request." },
   ];
   return (
-    <Section
-      id="how"
-      eyebrow="How it works"
-      title="Trigger. Automate. Follow up. Track."
-      className="bg-muted/40"
-    >
-      <div className="grid md:grid-cols-4 gap-4">
-        {steps.map((s) => (
-          <div key={s.n} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-            <div className="h-9 w-9 rounded-full grid place-items-center bg-primary text-primary-foreground text-sm font-bold">
-              {s.n}
-            </div>
-            <h3 className="mt-4 text-base font-semibold text-foreground">{s.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.body}</p>
-          </div>
-        ))}
+    <section id="how" className="border-b border-border/60 bg-muted/30">
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">How it works</h2>
+          <p className="mt-3 text-muted-foreground">
+            A structured intake and delivery loop, so nothing gets lost.
+          </p>
+        </div>
+        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-center">
+          <ol className="space-y-6">
+            {steps.map((s) => (
+              <li key={s.n} className="flex gap-4 rounded-2xl border border-border bg-card p-6">
+                <span className="text-2xl font-bold text-primary">{s.n}</span>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">{s.t}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{s.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <BrowserFrame src={submitRequestAsset.url} alt="ERRA submit new request form" />
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
-function Shot({
+function FeatureBlock({
+  eyebrow,
+  title,
+  body,
   src,
   alt,
-  caption,
-  title,
-  icon: Icon,
+  reverse,
 }: {
+  eyebrow: string;
+  title: string;
+  body: string;
   src: string;
   alt: string;
-  caption: string;
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
+  reverse?: boolean;
 }) {
   return (
-    <figure className="rounded-2xl overflow-hidden border border-border bg-card shadow-elegant">
-      <div className="p-5 border-b border-border flex items-start gap-3">
-        <div className="h-9 w-9 rounded-xl grid place-items-center bg-primary/10 text-primary shrink-0">
-          <Icon className="h-5 w-5" />
-        </div>
-        <div>
-          <div className="text-base font-semibold text-foreground">{title}</div>
-          <div className="text-sm text-muted-foreground mt-0.5">{caption}</div>
-        </div>
+    <div className={`grid gap-10 lg:grid-cols-2 lg:items-center ${reverse ? "lg:[&>div:first-child]:order-2" : ""}`}>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">{eyebrow}</p>
+        <h3 className="mt-3 text-2xl font-bold tracking-tight text-foreground md:text-3xl">{title}</h3>
+        <p className="mt-4 text-muted-foreground">{body}</p>
       </div>
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        className="w-full h-auto block bg-muted"
-      />
-    </figure>
+      <BrowserFrame src={src} alt={alt} />
+    </div>
   );
 }
 
-function ProductTour() {
+function Features() {
   return (
-    <Section
-      id="tour"
-      eyebrow="Product tour"
-      title="Every surface of ERRA, in the real product."
-      lead="These are actual screens from the live app, not mockups."
-    >
-      <div className="grid gap-6">
-        <Shot
-          src={reportsMetrics.url}
-          alt="ERRA Reports and Metrics dashboard"
-          title="Reports and Metrics"
-          icon={BarChart3}
-          caption="Total, active, completed, and backlog counts. Top request type, service performance, activity trend, and a full performance overview by week, month, quarter, or year."
+    <section id="features" className="border-b border-border/60">
+      <div className="mx-auto max-w-6xl space-y-24 px-6 py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">Built to keep your business moving</h2>
+          <p className="mt-3 text-muted-foreground">
+            Every screen is designed for owners and operators. No dashboards you never open.
+          </p>
+        </div>
+        <FeatureBlock
+          eyebrow="Dashboard"
+          title="At a glance status of every request"
+          body="See active work, backlog, and hours saved the moment you log in. Quick actions and an onboarding checklist keep you moving."
+          src={dashboardAsset.url}
+          alt="ERRA dashboard overview"
         />
-        <div className="grid md:grid-cols-2 gap-6">
-          <Shot
-            src={requestsHub.url}
-            alt="ERRA Requests Hub with client conversation drawer"
-            title="Requests Hub"
-            icon={Inbox}
-            caption="Kanban view of Active, Waiting on Review, and Approved requests. Open any card to see the full client conversation and progress."
-          />
-          <Shot
-            src={automationLibrary.url}
-            alt="ERRA Automation Library with 246 prebuilt flows"
-            title="Automation Library"
-            icon={Workflow}
-            caption="246 prebuilt automations tagged by category and channel. Search, filter, and activate the ones that fit your business."
-          />
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Shot
-            src={automationSequence.url}
-            alt="ERRA automation sequence detail"
-            title="Automation detail: full sequence"
-            icon={Workflow}
-            caption="Every automation shows its trigger, action, follow-up, review request, and re-engagement step, so operators know exactly what runs and when."
-          />
-          <Shot
-            src={automationBenefit.url}
-            alt="ERRA automation business impact panel"
-            title="Automation detail: business impact"
-            icon={Sparkles}
-            caption="Each flow ships with a clear conversion goal and notes, so it's obvious how the automation drives revenue or retention."
-          />
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Shot
-            src={integrationsHub.url}
-            alt="ERRA Integrations Hub with 37 platforms"
-            title="Integrations Hub"
-            icon={Plug}
-            caption="37 platforms across Social Media, Authentication, Payments, and more. Filter by industry, type, or category and connect in a click."
-          />
-          <Shot
-            src={aiChatbot.url}
-            alt="ERRA AI Chatbot workspace"
-            title="AI Tools: Chatbot and Voice"
-            icon={Bot}
-            caption="Active conversations, response time, satisfaction rate, and configuration for training data, response templates, and connected channels."
-          />
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Shot
-            src={billing.url}
-            alt="ERRA Billing and Subscription"
-            title="Billing and Subscription"
-            icon={ShieldCheck}
-            caption="Plan type, billing cycle, next billing date, payment method, and full payment history in one place."
-          />
-          <Shot
-            src={resourcesHub.url}
-            alt="ERRA Resources Hub"
-            title="Resources Hub"
-            icon={MessagesSquare}
-            caption="Getting Started guide, video tutorials, support chat, and a built-in referral program."
-          />
-        </div>
+        <FeatureBlock
+          eyebrow="Requests Hub. Active"
+          title="Track work across Active, Waiting on Review, and Approved"
+          body="A clear board for every request in flight. Nothing hides in an inbox, nothing stalls without a status."
+          src={requestsActiveAsset.url}
+          alt="ERRA active requests board"
+          reverse
+        />
+        <FeatureBlock
+          eyebrow="Requests Hub. Upcoming"
+          title="Control what ships next"
+          body="Reorder your queue, mark what is Next in Queue, and let the team know exactly what to build first."
+          src={requestsUpcomingAsset.url}
+          alt="ERRA upcoming requests queue"
+        />
+        <FeatureBlock
+          eyebrow="Submit New Request"
+          title="Structured intake with attachments and source"
+          body="Pick a request type, describe the outcome, attach images, videos, voice notes, or docs, and choose where the request begins."
+          src={submitRequestAsset.url}
+          alt="ERRA submit new request form"
+          reverse
+        />
       </div>
-    </Section>
+    </section>
   );
 }
 
-function Integrations() {
-  const platforms = [
-    "Instagram", "Google", "Facebook", "TikTok", "YouTube", "Threads",
-    "and 31 more",
-  ];
+function WhoFor() {
   return (
-    <Section
-      id="integrations"
-      eyebrow="Integrations"
-      title="Connects to the platforms service businesses already use."
-      className="bg-muted/40"
-    >
-      <div className="flex flex-wrap gap-2">
-        {platforms.map((p) => (
-          <span
-            key={p}
-            className="inline-flex items-center rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground"
-          >
-            {p}
-          </span>
-        ))}
+    <section className="border-b border-border/60 bg-muted/30">
+      <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">Built for service based businesses</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          Salons, clinics, agencies, studios, and every owner who spends too many hours doing
+          work a system should handle. ERRA turns those hours back into revenue.
+        </p>
       </div>
-      <p className="mt-6 text-sm text-muted-foreground max-w-2xl">
-        37 integrations across Social Media, Authentication, Payments, Scheduling, and Communications. Filter the full library inside the Integrations Hub.
-      </p>
-    </Section>
+    </section>
   );
 }
 
-function About() {
+function Contact() {
   return (
-    <Section
-      id="about"
-      eyebrow="About"
-      title="Built for the operators actually running service businesses."
-    >
-      <div className="grid md:grid-cols-2 gap-10 items-start">
-        <div className="space-y-5 text-muted-foreground leading-relaxed">
-          <p>
-            ERRA is a live SaaS product available by invite. This page is a public
-            showcase of what it does and how it looks.
-          </p>
-          <p>
-            If you run a service-based business and want to see whether ERRA fits,
-            or if you're a design or engineering collaborator interested in the
-            product, reach out below.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <Mail className="h-4 w-4 text-primary" /> Get in touch
-          </div>
-          <a
-            href="mailto:hello@erra.app"
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition"
-          >
-            hello@erra.app <ArrowRight className="h-3.5 w-3.5" />
-          </a>
-          <p className="mt-4 text-xs text-muted-foreground">
-            Replace with your preferred contact address.
-          </p>
-        </div>
+    <section id="contact">
+      <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">Ready to run smoothly?</h2>
+        <p className="mt-3 text-muted-foreground">
+          ERRA is currently onboarding new businesses by request. Reach out and we will get you set up.
+        </p>
+        <a
+          href={CONTACT}
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+        >
+          <Mail className="h-4 w-4" /> Request access
+        </a>
       </div>
-    </Section>
+    </section>
   );
 }
 
 function Footer() {
   return (
-    <footer className="border-t border-border py-10">
-      <div className="mx-auto max-w-7xl px-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-sm text-muted-foreground">
-        <div>
-          <span className="font-semibold text-foreground">ERRA</span> &copy; {new Date().getFullYear()}
-        </div>
-        <div>Public product showcase. Screens shown are the real product.</div>
+    <footer className="border-t border-border/60 bg-background">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground md:flex-row">
+        <Wordmark />
+        <p>© {new Date().getFullYear()} ERRA. All rights reserved.</p>
+        <a href={CONTACT} className="transition hover:text-foreground">Contact</a>
       </div>
     </footer>
+  );
+}
+
+function Landing() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Header />
+      <main>
+        <Hero />
+        <ValueProps />
+        <HowItWorks />
+        <Features />
+        <WhoFor />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
   );
 }
