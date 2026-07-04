@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Mail } from "lucide-react";
 
+import logoAsset from "@/assets/erra-logo.png.asset.json";
 import dashboardAsset from "@/assets/erra-dashboard.png.asset.json";
 import requestsActiveAsset from "@/assets/erra-requests-active.png.asset.json";
 import requestsUpcomingAsset from "@/assets/erra-requests-upcoming.png.asset.json";
