@@ -1,57 +1,59 @@
-## ERRA Public Showcase — Static One-Page Site
+## ERRA Style Guide Handoff + Retheme
 
-Build a polished static one-page showcase for ERRA. Not the production app; no reusable production code.
+Two deliverables in one pass: a self-contained style-guide doc, and a retheme of this showcase to match the ERRA visual system exactly.
 
-### Files to create/modify
+### 1. New file — `STYLE_GUIDE.md` (project root)
 
-- `src/styles.css` — teal + aurora token system (light/dark), gradients, shadows, `Space Grotesk` + `Inter` font stacks, utility classes (`gradient-text`, `surface-glass`, `mock-badge`).
-- `src/routes/__root.tsx` — Google Fonts `<link>` tags, ThemeProvider wrap, SEO defaults, `<Outlet />` intact.
-- `src/routes/index.tsx` — full one-page composition with rich `head()` (title, description, og:*, twitter:card) and anchor sections.
-- `src/components/site/theme-provider.tsx` — light/dark toggle w/ localStorage.
-- `src/components/site/*` — one file per section (see below).
-- `src/assets/hero-abstract.jpg` — decorative aurora gradient only (already exists, reuse).
+Single markdown doc containing:
+- Brand notes (name, tagline, logo/favicon guidance — note the PNG is not included; user must export from the private app)
+- Typography rules (Inter 300–700, load via Google Fonts `<link>`, tailwind `fontFamily.sans`)
+- Full HSL + hex color token tables (light + dark) as provided
+- Chart palette
+- Radius, shadow, theme system, icon set, component library notes
+- Layout patterns (sticky nav, containers, mobile scroll strip, `.scrollbar-hide`)
+- Keyframes (`accordion-down/up`, `fall`)
+- **Ready-to-paste snippets**, verbatim:
+  - `index.html` `<head>` block (fonts + title + description)
+  - `index.css` `:root` + `.dark` token blocks (HSL form)
+  - `tailwind.config.ts` fragment (darkMode, fontFamily, colors mapped to CSS vars, borderRadius, keyframes, `.scrollbar-hide` utility)
+- Short "how to apply in a Vite + shadcn project" checklist
 
-### Sections (in order)
+Doc is self-contained — a reader can paste it into a fresh project and reproduce the look without visiting this repo.
 
-1. **TopRibbon** — "Public showcase · Not the production source code" disclaimer.
-2. **StickyNav** — ERRA wordmark + anchor links + theme toggle.
-3. **Hero** — headline, subhead, two pill CTAs (`#contributor`, `#demo`), aurora backdrop.
-4. **ProductOverview** — plain-language description based on the approved public-safe export.
-5. **WhyItExists** — problem/motivation narrative.
-6. **FeatureHighlights** — capability cards (icons + short copy), no counts like "30+".
-7. **ScreenshotsGallery** — stylized mock browser/app frames rendered in pure CSS/SVG, each with a visible "Mock showcase visual" badge. No traced UI from real screenshots.
-8. **DemoWalkthrough** — numbered step list describing a conceptual user journey.
-9. **ArchitectureOverview** — conceptual 5-layer SVG diagram (Client · Presentation · Application · Data · Integrations), no vendor names or schemas.
-10. **TechnologyStack** — generic category chips (Frontend, Styling, State, Routing, Backend Runtime, Data Layer, Auth Pattern, AI Layer), no provider/model names, no secrets.
-11. **FAQ** — accordion, public-safe answers.
-12. **AboutTheProject** — background, scope, status.
-13. **Contact** — static section with placeholder `mailto:` and social `#` links (no form, no backend).
-14. **ContributorRequest** — how to get involved, placeholder GitHub link.
-15. **Footer** — repeat disclaimer, copyright, small nav.
+### 2. Retheme this showcase to match
 
-### Content rules (hard constraints)
+Only presentation layer changes. No new sections, no content changes, no logic changes.
 
-- Wording is **based on the approved public-safe export** (not "verbatim").
-- **Mock showcase visuals only** — every gallery/preview image carries a visible "Mock showcase visual" badge.
-- **No** provider names, model names, table names, schemas, endpoints, env var names, blueprint terms, real emails, `localhost`, `127.0.0.1`, `.env`, or numeric brags like "30+".
-- **No** backend, auth, database, forms, APIs, edge functions, or Cloud enablement.
-- **No** reused production code — everything authored fresh for this showcase.
-- Strong non-production disclaimer in TopRibbon, About, and Footer.
+- **`src/styles.css`**
+  - Replace current oklch teal/aurora tokens with the ERRA HSL tokens (light `:root` + `.dark`) exactly as specified
+  - `--radius: 1rem`
+  - Keep semantic mapping under `@theme inline` so all existing components pick up the new palette automatically
+  - Update `--font-sans` to `"Inter", sans-serif`; remove `Space Grotesk` display font and the `--font-display` token (headings will use Inter too, per ERRA)
+  - Replace `--gradient-aurora` / `--gradient-hero` / `--gradient-card` with subtle teal→cyan and warm-sand tints built from the new tokens (kept minimal — ERRA itself uses flat surfaces + soft shadows, not heavy gradients)
+  - Keep utility classes (`gradient-text`, `surface-glass`, `shadow-elegant`, `mock-badge`) but recolored to new tokens
+  - Add `.scrollbar-hide` utility
 
-### Design
+- **`src/routes/__root.tsx`**
+  - Swap Google Fonts link to Inter `300;400;500;600;700` only (drop Space Grotesk)
+  - Leave SEO/meta as-is (this is still the showcase, not the real product — do NOT adopt the real ERRA title/description, since the showcase disclaimer requires it stay clearly a showcase)
 
-- Teal primary `oklch(0.62 0.13 200)`, aurora indigo→teal accent gradient, soft pastel card washes, navy ink text, 14px rounded corners, pill buttons, generous whitespace.
-- `Space Grotesk` headings, `Inter` body — loaded via `<link>` in `__root.tsx` head (never `@import` remote in `styles.css`).
-- Fully semantic tokens; no hardcoded colors in components. Light + dark themes. WCAG AA.
+- **Section components** — no structural edits. Verify hero, nav, cards, and mock frames still read well against the new palette; adjust only inline utility classes if contrast breaks (e.g. swap a hardcoded gradient reference to the new token). No content rewrites.
+
+### Constraints preserved
+
+- Still a static showcase — no backend, no forms, no real ERRA screenshots, mock-badge visuals only
+- Disclaimers in TopRibbon / About / Footer stay
+- No provider names, schemas, secrets, or production code
+- Logo PNG NOT added (user must export from private app); favicon stays default until they provide one
 
 ### Verification
 
-- Playwright screenshots at 1280×1800 and 390×844 of hero, gallery, architecture, contributor sections.
-- Confirm build passes, no console errors, anchor nav scrolls correctly, theme toggle works.
+- Build passes
+- Playwright screenshot at 1280×1800 of hero + gallery to confirm teal `#00A3B3` primary, `#1F2033` text, `#DDBB8F` accent, 1rem rounded corners, Inter throughout
+- Dark mode toggle still works with new dark tokens
 
-### Post-build summary to user
+### Post-build summary
 
-- Files created (list)
-- Sections included (list)
-- Placeholders to replace: GitHub URL, LinkedIn URL, contact email, real imagery if desired
-- Explicit confirmation: no private implementation details, provider names, schemas, secrets, or production code included
+- Files created / edited
+- Confirmation that colors, radius, and font match the spec
+- Placeholders remaining: logo PNG, favicon, contact email, social links
