@@ -277,7 +277,10 @@ function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground md:flex-row">
         <Wordmark />
         <p>© {new Date().getFullYear()} ERRA. All rights reserved.</p>
-        <a href={CONTACT} className="transition hover:text-foreground">Contact</a>
+        <div className="flex flex-col items-center gap-1 md:items-end">
+          <a href={CONTACT} className="transition hover:text-foreground">{EMAIL}</a>
+          <span>{HANDLE}</span>
+        </div>
       </div>
     </footer>
   );
