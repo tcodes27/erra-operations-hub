@@ -10,13 +10,13 @@ Self-contained reference for reproducing the ERRA look in any Vite + shadcn/ui p
 
 - **Name**: ERRA
 - **Tagline**: *Your business, running smoothly* (also used: "Business Automation Platform")
-- **Logo**: `src/assets/erra-logo.png` in the private repo, rendered `h-8` mobile / `h-10` desktop in the top nav. Export from the running app or recreate — not bundled here.
+- **Logo**: `src/assets/erra-logo.png` in the private repo, rendered `h-8` mobile / `h-10` desktop in the top nav. Export from the running app or recreate , not bundled here.
 - **Favicon**: `/logo.png` referenced from `index.html`.
 
 ## 2. Typography
 
 - **Family** (everything): `Inter`, weights `300, 400, 500, 600, 700`.
-- Load via Google Fonts `<link>` in `<head>` — do **not** `@import` a URL from CSS.
+- Load via Google Fonts `<link>` in `<head>` , do **not** `@import` a URL from CSS.
 - Tailwind: `fontFamily.sans = ['Inter', 'sans-serif']` so every default class uses Inter.
 
 ## 3. Color tokens
@@ -31,7 +31,7 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 | `--foreground` | `237 24% 16%` | `#1F2033` |
 | `--card` / `--popover` | `0 0% 100%` | `#FFFFFF` |
 | `--card-foreground` | `237 24% 16%` | `#1F2033` |
-| `--primary` | `191 100% 35%` | `#00A3B3` (teal — brand) |
+| `--primary` | `191 100% 35%` | `#00A3B3` (teal , brand) |
 | `--primary-foreground` | `0 0% 100%` | `#FFFFFF` |
 | `--secondary` | `191 100% 45%` | `#00D1E6` (bright cyan) |
 | `--muted` | `0 0% 96.1%` | `#F5F5F5` |
@@ -43,7 +43,7 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 | `--ring` | `191 100% 35%` | `#00A3B3` |
 | `--highlight` | `36 34% 71%` | `#D4BB99` |
 | `--dark` | `237 24% 16%` | `#1F2033` |
-| `--radius` | — | `1rem` |
+| `--radius` | , | `1rem` |
 
 ### Dark mode (`.dark`)
 
@@ -70,13 +70,13 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 - **Shadows**: default shadcn `shadow-sm` on cards and sticky nav. No custom shadow tokens.
 - **Theme system**: `next-themes` with `light | dark | system`, class-based (`darkMode: ["class"]`).
 - **Icons**: `lucide-react`.
-- **Components**: shadcn/ui (Radix) — `components.json` style `default`, baseColor `slate`, CSS variables `true`.
+- **Components**: shadcn/ui (Radix) , `components.json` style `default`, baseColor `slate`, CSS variables `true`.
 - **Custom utility**: `.scrollbar-hide` (cross-browser scrollbar hiding).
 - **Keyframes**: `accordion-down`, `accordion-up`, `fall` (3s ease-in falling confetti).
 
 ## 5. Layout patterns
 
-- **App shell**: sticky top nav (`h-16`, `border-b bg-card shadow-sm`), centered logo + label, grouped `DropdownMenu` navigation (Radix — not `NavigationMenu`), right-cluster: notifications → theme toggle → sign out.
+- **App shell**: sticky top nav (`h-16`, `border-b bg-card shadow-sm`), centered logo + label, grouped `DropdownMenu` navigation (Radix , not `NavigationMenu`), right-cluster: notifications → theme toggle → sign out.
 - **Container**: `max-w-7xl mx-auto`, page padding `px-4 lg:px-6 py-8`.
 - **Mobile nav**: horizontal scroll strip of pill buttons using `.scrollbar-hide`.
 - **Buttons**: shadcn defaults; primary uses teal `--primary`, hover `bg-primary/90`.
@@ -85,7 +85,7 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 
 ## 6. Ready-to-paste snippets
 
-### `index.html` — `<head>`
+### `index.html` , `<head>`
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -97,7 +97,7 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 <link rel="icon" href="/logo.png" />
 ```
 
-### `src/index.css` — token blocks
+### `src/index.css` , token blocks
 
 ```css
 @tailwind base;
@@ -189,7 +189,7 @@ All tokens are HSL CSS variables. Hex equivalents shown for reference.
 }
 ```
 
-### `tailwind.config.ts` — fragment
+### `tailwind.config.ts` , fragment
 
 ```ts
 import type { Config } from "tailwindcss";
@@ -277,7 +277,7 @@ export default {
 2. Paste the `<head>` snippet into `index.html` (fonts + title + description + favicon).
 3. Paste the token blocks into `src/index.css` (overwriting the shadcn defaults).
 4. Merge the Tailwind config fragment into `tailwind.config.ts`.
-5. `bun add next-themes lucide-react` — wire `<ThemeProvider defaultTheme="system">` at the app root.
+5. `bun add next-themes lucide-react` , wire `<ThemeProvider defaultTheme="system">` at the app root.
 6. Export the ERRA logo PNG from the private repo and drop it at `src/assets/erra-logo.png` + `public/logo.png`.
 7. Build the sticky top nav (`h-16 border-b bg-card shadow-sm`, `max-w-7xl mx-auto`), use `DropdownMenu` for nav groups, `lucide-react` for icons, and `.scrollbar-hide` for the mobile pill strip.
 

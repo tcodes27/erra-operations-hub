@@ -70,7 +70,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const SITE_TITLE = "ERRA — Public Showcase";
+const SITE_TITLE = "ERRA , Public Showcase";
 const SITE_DESC = "A public portfolio showcase of ERRA, a conceptual customer-experience platform. This site is not the production application.";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
