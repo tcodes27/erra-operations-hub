@@ -6,54 +6,50 @@ import {
   Sun,
   ArrowRight,
   Sparkles,
-  Layers,
-  ShieldCheck,
-  Workflow,
-  Gauge,
-  Boxes,
   MessagesSquare,
-  Wand2,
-  Github,
-  Linkedin,
+  Workflow,
+  Bot,
+  Plug,
+  BarChart3,
+  Inbox,
+  ShieldCheck,
   Mail,
-  ExternalLink,
-  ChevronDown,
-  Users,
-  Rocket,
-  Puzzle,
-  Eye,
 } from "lucide-react";
+
+import requestsHub from "@/assets/erra-requests-hub.png.asset.json";
+import integrationsHub from "@/assets/erra-integrations-hub.png.asset.json";
+import aiChatbot from "@/assets/erra-ai-chatbot.png.asset.json";
+import resourcesHub from "@/assets/erra-resources-hub.png.asset.json";
+import billing from "@/assets/erra-billing.png.asset.json";
+import reportsMetrics from "@/assets/erra-reports-metrics.png.asset.json";
+import automationBenefit from "@/assets/erra-automation-benefit.png.asset.json";
+import automationSequence from "@/assets/erra-automation-sequence.png.asset.json";
+import automationLibrary from "@/assets/erra-automation-library.png.asset.json";
+
+const TITLE = "ERRA. Automation for service-based businesses.";
+const DESC =
+  "ERRA is an automation platform for service-based businesses. Client intake, follow-ups, reviews, chatbot, voice AI, and 37 integrations from one dashboard. Public product showcase.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ERRA — Public Showcase of a Customer Experience Platform" },
-      {
-        name: "description",
-        content:
-          "A public portfolio showcase of ERRA, a conceptual customer-experience platform. Mock visuals only — this is not the production application.",
-      },
-      { property: "og:title", content: "ERRA — Public Showcase" },
-      {
-        property: "og:description",
-        content:
-          "Explore ERRA's concept, feature highlights, architecture overview, and how to contribute. Public showcase only.",
-      },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
 });
 
 const NAV = [
-  { href: "#overview", label: "Overview" },
-  { href: "#why", label: "Why" },
-  { href: "#features", label: "Features" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#demo", label: "Demo" },
-  { href: "#architecture", label: "Architecture" },
-  { href: "#stack", label: "Stack" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contributor", label: "Contribute" },
+  { href: "#what", label: "What it is" },
+  { href: "#how", label: "How it works" },
+  { href: "#tour", label: "Product tour" },
+  { href: "#integrations", label: "Integrations" },
+  { href: "#about", label: "About" },
 ];
 
 function Index() {
@@ -63,32 +59,24 @@ function Index() {
       <StickyNav />
       <main>
         <Hero />
-        <ProductOverview />
-        <WhyItExists />
-        <FeatureHighlights />
-        <ScreenshotsGallery />
-        <DemoWalkthrough />
-        <ArchitectureOverview />
-        <TechnologyStack />
-        <FAQ />
-        <AboutTheProject />
-        <Contact />
-        <ContributorRequest />
+        <WhatItIs />
+        <HowItWorks />
+        <ProductTour />
+        <Integrations />
+        <About />
       </main>
       <Footer />
     </div>
   );
 }
 
-/* ---------- Ribbon + Nav ---------- */
-
 function TopRibbon() {
   return (
-    <div className="w-full bg-[color:var(--brand)] text-primary-foreground text-xs">
+    <div className="w-full bg-primary text-primary-foreground text-xs">
       <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-center gap-2 text-center">
         <Sparkles className="h-3.5 w-3.5" />
         <span className="font-medium">
-          Public showcase · Not the production source code · Content based on the approved public-safe export
+          Public showcase of ERRA, a live SaaS product. Screens shown are the real product.
         </span>
       </div>
     </div>
@@ -99,13 +87,9 @@ function Wordmark() {
   return (
     <a href="#top" className="flex items-center gap-2 group">
       <span
-        className="text-2xl font-bold italic tracking-tight"
-        style={{ fontFamily: "'Space Grotesk', sans-serif", color: "var(--brand)" }}
+        className="text-2xl font-bold italic tracking-tight text-primary"
       >
         ERRA
-      </span>
-      <span className="hidden sm:inline text-[10px] font-medium uppercase tracking-widest text-muted-foreground border border-border rounded-full px-2 py-0.5">
-        Showcase
       </span>
     </a>
   );
@@ -114,7 +98,6 @@ function Wordmark() {
 function StickyNav() {
   const { theme, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -132,12 +115,12 @@ function StickyNav() {
     >
       <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
         <Wordmark />
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
-              className="px-3 py-1.5 rounded-full text-sm text-ink-soft hover:text-ink hover:bg-accent transition"
+              className="px-3 py-1.5 rounded-full text-sm text-muted-foreground hover:text-foreground hover:bg-accent/40 transition"
             >
               {n.label}
             </a>
@@ -147,46 +130,62 @@ function StickyNav() {
           <button
             onClick={toggle}
             aria-label="Toggle theme"
-            className="p-2 rounded-full border border-border hover:bg-accent transition"
+            className="p-2 rounded-full border border-border hover:bg-accent/40 transition"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
           <a
-            href="#contributor"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[color:var(--brand)] text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition"
+            href="#about"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition"
           >
-            Contribute <ArrowRight className="h-3.5 w-3.5" />
+            Get in touch <ArrowRight className="h-3.5 w-3.5" />
           </a>
-          <button
-            onClick={() => setOpen(!open)}
-            className="lg:hidden p-2 rounded-full border border-border"
-            aria-label="Menu"
-          >
-            <ChevronDown className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`} />
-          </button>
         </div>
       </div>
-      {open && (
-        <div className="lg:hidden border-t border-border surface-glass">
-          <div className="mx-auto max-w-7xl px-4 py-3 grid grid-cols-2 gap-1">
-            {NAV.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className="px-3 py-2 rounded-lg text-sm hover:bg-accent"
-              >
-                {n.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </header>
   );
 }
 
-/* ---------- Section wrapper ---------- */
+function Hero() {
+  return (
+    <section className="relative overflow-hidden gradient-hero">
+      <div className="relative mx-auto max-w-7xl px-4 pt-16 md:pt-24 pb-20 md:pb-28">
+        <div className="max-w-3xl">
+          <div className="mock-badge mb-6">Business Automation Platform</div>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-foreground">
+            Your business,{" "}
+            <span className="gradient-text">running smoothly</span>.
+          </h1>
+          <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
+            ERRA is an automation platform built for service-based businesses.
+            Studios, clinics, agencies, med-spas, and salons use it to handle
+            client intake, follow-ups, reviews, re-engagement, chatbot and voice
+            AI, plus 37 platform integrations from one dashboard.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a
+              href="#tour"
+              className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold shadow-elegant hover:opacity-90 transition"
+            >
+              See the product <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#about"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 backdrop-blur px-6 py-3 text-sm font-semibold hover:bg-accent/40 transition"
+            >
+              Get in touch
+            </a>
+          </div>
+          <div className="mt-10 flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5"><Workflow className="h-3.5 w-3.5" /> 246 prebuilt automations</span>
+            <span className="flex items-center gap-1.5"><Plug className="h-3.5 w-3.5" /> 37 integrations</span>
+            <span className="flex items-center gap-1.5"><Bot className="h-3.5 w-3.5" /> AI chatbot and voice</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Section({
   id,
@@ -204,22 +203,18 @@ function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`scroll-mt-24 py-20 md:py-28 ${className}`}>
+    <section id={id} className={`scroll-mt-24 py-20 md:py-24 ${className}`}>
       <div className="mx-auto max-w-7xl px-4">
         {(eyebrow || title || lead) && (
-          <div className="max-w-3xl mb-12 md:mb-16">
-            {eyebrow && (
-              <div className="mock-badge mb-4" style={{ background: "transparent" }}>
-                {eyebrow}
-              </div>
-            )}
+          <div className="max-w-3xl mb-12">
+            {eyebrow && <div className="mock-badge mb-4">{eyebrow}</div>}
             {title && (
-              <h2 className="text-3xl md:text-5xl font-bold text-ink">
+              <h2 className="text-3xl md:text-5xl font-bold text-foreground">
                 {title}
               </h2>
             )}
             {lead && (
-              <p className="mt-4 text-lg text-ink-soft leading-relaxed">{lead}</p>
+              <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{lead}</p>
             )}
           </div>
         )}
@@ -229,154 +224,37 @@ function Section({
   );
 }
 
-/* ---------- Hero ---------- */
-
-function Hero() {
-  return (
-    <section className="relative overflow-hidden gradient-hero">
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full blur-3xl" style={{ background: "var(--gradient-aurora)" }} />
-        <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full blur-3xl" style={{ background: "oklch(0.72 0.15 280 / 0.4)" }} />
-      </div>
-      <div className="relative mx-auto max-w-7xl px-4 pt-16 md:pt-24 pb-24 md:pb-32">
-        <div className="max-w-3xl">
-          <div className="mock-badge mb-6">Public Showcase</div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-ink">
-            A calmer way to run{" "}
-            <span className="gradient-text">customer experience</span>.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-ink-soft leading-relaxed max-w-2xl">
-            ERRA is a conceptual customer-experience platform that brings conversations,
-            context, and thoughtful automation into one calm workspace. This page is a
-            public portfolio of the idea — not the working product.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#demo"
-              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand)] text-primary-foreground px-6 py-3 text-sm font-semibold shadow-elegant hover:opacity-90 transition"
-            >
-              See the walkthrough <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#contributor"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 backdrop-blur px-6 py-3 text-sm font-semibold hover:bg-accent transition"
-            >
-              Become a contributor
-            </a>
-          </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-xs text-ink-soft">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5" /> Non-production</span>
-            <span className="flex items-center gap-1.5"><Eye className="h-3.5 w-3.5" /> Mock showcase visuals only</span>
-            <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5" /> Public-safe content</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Overview ---------- */
-
-function ProductOverview() {
-  return (
-    <Section
-      id="overview"
-      eyebrow="Product overview"
-      title="A single, quiet surface for customer relationships."
-      lead="ERRA is designed as a small, focused workspace where teams can follow every conversation, understand the person behind it, and take the next thoughtful step — without switching between six different tools."
-    >
-      <div className="grid md:grid-cols-3 gap-4">
-        {[
-          { icon: MessagesSquare, title: "Conversations", body: "A shared inbox that respects context, tone, and history." },
-          { icon: Layers, title: "Context", body: "The customer, their story, and prior touchpoints in one glance." },
-          { icon: Wand2, title: "Assistance", body: "Optional AI helpers that draft, summarize, and suggest — never override." },
-        ].map((c) => (
-          <div key={c.title} className="rounded-2xl border border-border gradient-card p-6 shadow-soft">
-            <c.icon className="h-6 w-6 text-[color:var(--brand)]" />
-            <h3 className="mt-4 text-lg font-semibold text-ink">{c.title}</h3>
-            <p className="mt-2 text-sm text-ink-soft leading-relaxed">{c.body}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Why ---------- */
-
-function WhyItExists() {
-  return (
-    <Section
-      id="why"
-      eyebrow="Why it exists"
-      title="Support tools have grown noisy. People haven't."
-      className="bg-surface-alt"
-    >
-      <div className="grid md:grid-cols-2 gap-10 items-start">
-        <div className="space-y-5 text-ink-soft leading-relaxed">
-          <p>
-            Most customer platforms optimize for volume: more tickets, more macros, more dashboards.
-            The person on the other side ends up feeling processed rather than heard.
-          </p>
-          <p>
-            ERRA is a small experiment in the opposite direction — fewer surfaces, gentler defaults,
-            and interfaces that give practitioners room to think. It treats a customer conversation
-            as a relationship, not a queue item.
-          </p>
-          <p>
-            This showcase exists so the philosophy and design language can live in the open, even
-            while the working product stays private.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { k: "Signal over noise", v: "Focus on what matters this hour, not this quarter." },
-            { k: "Calm defaults", v: "Interfaces that don't shout for attention." },
-            { k: "Human first", v: "Automation supports the practitioner, never replaces them." },
-            { k: "Open thinking", v: "Design and reasoning documented in public." },
-          ].map((it) => (
-            <div key={it.k} className="rounded-2xl p-5 border border-border bg-surface shadow-soft">
-              <div className="text-sm font-semibold text-ink">{it.k}</div>
-              <div className="mt-1.5 text-sm text-ink-soft">{it.v}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Features ---------- */
-
-function FeatureHighlights() {
-  const features = [
-    { icon: MessagesSquare, title: "Unified conversations", body: "One thread per person, across every channel a team supports." },
-    { icon: Layers, title: "Contextual profile", body: "A quiet sidebar that surfaces history without overwhelming." },
-    { icon: Wand2, title: "AI assistance", body: "Draft replies, summarize threads, extract action items — opt-in only." },
-    { icon: Workflow, title: "Gentle workflows", body: "Lightweight automations that suggest rather than dictate." },
-    { icon: Gauge, title: "Meaningful metrics", body: "A small set of numbers that reflect real quality of care." },
-    { icon: Boxes, title: "Composable views", body: "Rearrange panels to match how your team actually works." },
-    { icon: ShieldCheck, title: "Considered privacy", body: "Explicit boundaries around what is shared, stored, and inferred." },
-    { icon: Puzzle, title: "Extensible", body: "Room for integrations without turning the workspace into a marketplace." },
+function WhatItIs() {
+  const pillars = [
+    {
+      icon: Workflow,
+      title: "Prebuilt automation library",
+      body: "246 ready-to-run flows across SMS, email, chatbot, and AI. Tag by Communication, Retention, or Lead Gen and activate in one click.",
+    },
+    {
+      icon: Inbox,
+      title: "Client Requests Hub",
+      body: "A kanban of every active, in-review, and completed request. Full conversation history per client, so nothing gets dropped.",
+    },
+    {
+      icon: Bot,
+      title: "AI Tools built in",
+      body: "Chatbot and Voice AI trained on your business. Answer FAQs, book appointments, and route conversations 24/7.",
+    },
   ];
   return (
     <Section
-      id="features"
-      eyebrow="Feature highlights"
-      title="Capabilities designed to stay out of your way."
-      lead="Each capability is intentional — no dashboards for the sake of dashboards, no automations that surprise the customer."
+      id="what"
+      eyebrow="What it is"
+      title="One dashboard for the systems behind your business."
+      lead="ERRA handles the behind-the-scenes work so operators can focus on serving clients."
     >
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {features.map((f) => (
-          <div
-            key={f.title}
-            className="group rounded-2xl border border-border bg-surface p-6 hover:shadow-elegant transition"
-          >
-            <div className="h-10 w-10 rounded-xl grid place-items-center bg-brand-soft text-[color:var(--brand)]">
-              <f.icon className="h-5 w-5" />
-            </div>
-            <h3 className="mt-4 text-base font-semibold text-ink">{f.title}</h3>
-            <p className="mt-2 text-sm text-ink-soft leading-relaxed">{f.body}</p>
+      <div className="grid md:grid-cols-3 gap-4">
+        {pillars.map((c) => (
+          <div key={c.title} className="rounded-2xl border border-border gradient-card p-6 shadow-soft">
+            <c.icon className="h-6 w-6 text-primary" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">{c.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.body}</p>
           </div>
         ))}
       </div>
@@ -384,462 +262,229 @@ function FeatureHighlights() {
   );
 }
 
-/* ---------- Gallery (mock frames) ---------- */
-
-function MockFrame({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-border bg-surface shadow-elegant overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-surface-alt">
-        <div className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.85_0.08_30)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.88_0.12_90)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.82_0.12_150)]" />
-        </div>
-        <div className="text-xs text-ink-soft font-medium">{title}</div>
-        <div className="mock-badge">Mock</div>
-      </div>
-      <div className="p-5 min-h-[280px]">{children}</div>
-    </div>
-  );
-}
-
-function MockInbox() {
-  return (
-    <div className="grid grid-cols-[140px_1fr] gap-4 h-full">
-      <div className="space-y-2">
-        {["Inbox", "Assigned", "Mentions", "Archive"].map((s, i) => (
-          <div
-            key={s}
-            className={`px-3 py-2 rounded-lg text-xs ${i === 0 ? "bg-brand-soft text-[color:var(--brand)] font-semibold" : "text-ink-soft"}`}
-          >
-            {s}
-          </div>
-        ))}
-      </div>
-      <div className="space-y-2">
-        {["Onboarding follow-up", "Renewal question", "Feature idea", "Thank-you note"].map((t, i) => (
-          <div key={t} className="p-3 rounded-lg border border-border bg-surface-alt">
-            <div className="flex items-center justify-between">
-              <div className="text-xs font-semibold text-ink">{t}</div>
-              <div className="text-[10px] text-ink-soft">{["2m", "1h", "3h", "1d"][i]}</div>
-            </div>
-            <div className="mt-1 h-1.5 rounded-full bg-border overflow-hidden">
-              <div className="h-full bg-[color:var(--brand)]" style={{ width: `${80 - i * 15}%` }} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MockConversation() {
-  return (
-    <div className="space-y-3">
-      {[
-        { me: false, text: "Hi — just wondering if there's a way to group by project?" },
-        { me: true, text: "Great question. You can group by project from the top-right menu." },
-        { me: false, text: "Perfect, thank you." },
-      ].map((m, i) => (
-        <div key={i} className={`flex ${m.me ? "justify-end" : "justify-start"}`}>
-          <div
-            className={`max-w-[75%] px-3.5 py-2 rounded-2xl text-xs leading-relaxed ${
-              m.me
-                ? "bg-[color:var(--brand)] text-primary-foreground rounded-br-sm"
-                : "bg-surface-alt text-ink rounded-bl-sm"
-            }`}
-          >
-            {m.text}
-          </div>
-        </div>
-      ))}
-      <div className="mt-4 rounded-xl border border-border p-3 bg-surface-alt">
-        <div className="text-[10px] uppercase tracking-wider text-ink-soft font-semibold">Suggested reply</div>
-        <div className="mt-1 text-xs text-ink">Glad that helped — want me to enable grouping by default for your workspace?</div>
-      </div>
-    </div>
-  );
-}
-
-function MockInsights() {
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-3">
-        {[
-          { k: "Response quality", v: "Steady" },
-          { k: "Time to context", v: "Improving" },
-          { k: "Return rate", v: "Healthy" },
-        ].map((s) => (
-          <div key={s.k} className="rounded-xl p-3 gradient-card border border-border">
-            <div className="text-[10px] uppercase tracking-wider text-ink-soft">{s.k}</div>
-            <div className="mt-1 text-sm font-semibold text-ink">{s.v}</div>
-          </div>
-        ))}
-      </div>
-      <div className="rounded-xl border border-border p-4 h-40 relative overflow-hidden">
-        <svg viewBox="0 0 300 120" className="w-full h-full">
-          <defs>
-            <linearGradient id="ln" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="oklch(0.62 0.13 200)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="oklch(0.62 0.13 200)" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path d="M0,90 C40,70 80,80 120,60 C160,40 200,55 240,35 C260,25 280,30 300,20 L300,120 L0,120 Z" fill="url(#ln)" />
-          <path d="M0,90 C40,70 80,80 120,60 C160,40 200,55 240,35 C260,25 280,30 300,20" fill="none" stroke="oklch(0.62 0.13 200)" strokeWidth="2" />
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-function ScreenshotsGallery() {
+function HowItWorks() {
+  const steps = [
+    { n: "1", title: "Client triggers an event", body: "Books an appointment, submits a form, sends an Instagram DM, or misses a visit." },
+    { n: "2", title: "ERRA runs the matching automation", body: "The right flow fires from the library. SMS, email, chatbot, or AI, in the right order." },
+    { n: "3", title: "Follow-ups happen automatically", body: "Confirmations, prep instructions, review requests, and re-engagement, on schedule." },
+    { n: "4", title: "Everything lands in Requests Hub", body: "Every client thread with full conversation history, ready for the team to jump in." },
+  ];
   return (
     <Section
-      id="gallery"
-      eyebrow="Screenshots gallery"
-      title="Mock showcase visuals."
-      lead="Every image below is a stylized mock created for this showcase. Nothing is captured from the working product."
-      className="bg-surface-alt"
+      id="how"
+      eyebrow="How it works"
+      title="Trigger. Automate. Follow up. Track."
+      className="bg-muted/40"
     >
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <MockFrame title="Inbox"><MockInbox /></MockFrame>
-        <MockFrame title="Conversation"><MockConversation /></MockFrame>
-        <MockFrame title="Insights"><MockInsights /></MockFrame>
+      <div className="grid md:grid-cols-4 gap-4">
+        {steps.map((s) => (
+          <div key={s.n} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+            <div className="h-9 w-9 rounded-full grid place-items-center bg-primary text-primary-foreground text-sm font-bold">
+              {s.n}
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-foreground">{s.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+          </div>
+        ))}
       </div>
-      <p className="mt-6 text-xs text-ink-soft text-center">
-        Visuals are illustrative only — layouts, copy, and numbers do not represent the production application.
+    </Section>
+  );
+}
+
+function Shot({
+  src,
+  alt,
+  caption,
+  title,
+  icon: Icon,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+}) {
+  return (
+    <figure className="rounded-2xl overflow-hidden border border-border bg-card shadow-elegant">
+      <div className="p-5 border-b border-border flex items-start gap-3">
+        <div className="h-9 w-9 rounded-xl grid place-items-center bg-primary/10 text-primary shrink-0">
+          <Icon className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-base font-semibold text-foreground">{title}</div>
+          <div className="text-sm text-muted-foreground mt-0.5">{caption}</div>
+        </div>
+      </div>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="w-full h-auto block bg-muted"
+      />
+    </figure>
+  );
+}
+
+function ProductTour() {
+  return (
+    <Section
+      id="tour"
+      eyebrow="Product tour"
+      title="Every surface of ERRA, in the real product."
+      lead="These are actual screens from the live app, not mockups."
+    >
+      <div className="grid gap-6">
+        <Shot
+          src={reportsMetrics.url}
+          alt="ERRA Reports and Metrics dashboard"
+          title="Reports and Metrics"
+          icon={BarChart3}
+          caption="Total, active, completed, and backlog counts. Top request type, service performance, activity trend, and a full performance overview by week, month, quarter, or year."
+        />
+        <div className="grid md:grid-cols-2 gap-6">
+          <Shot
+            src={requestsHub.url}
+            alt="ERRA Requests Hub with client conversation drawer"
+            title="Requests Hub"
+            icon={Inbox}
+            caption="Kanban view of Active, Waiting on Review, and Approved requests. Open any card to see the full client conversation and progress."
+          />
+          <Shot
+            src={automationLibrary.url}
+            alt="ERRA Automation Library with 246 prebuilt flows"
+            title="Automation Library"
+            icon={Workflow}
+            caption="246 prebuilt automations tagged by category and channel. Search, filter, and activate the ones that fit your business."
+          />
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <Shot
+            src={automationSequence.url}
+            alt="ERRA automation sequence detail"
+            title="Automation detail: full sequence"
+            icon={Workflow}
+            caption="Every automation shows its trigger, action, follow-up, review request, and re-engagement step, so operators know exactly what runs and when."
+          />
+          <Shot
+            src={automationBenefit.url}
+            alt="ERRA automation business impact panel"
+            title="Automation detail: business impact"
+            icon={Sparkles}
+            caption="Each flow ships with a clear conversion goal and notes, so it's obvious how the automation drives revenue or retention."
+          />
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <Shot
+            src={integrationsHub.url}
+            alt="ERRA Integrations Hub with 37 platforms"
+            title="Integrations Hub"
+            icon={Plug}
+            caption="37 platforms across Social Media, Authentication, Payments, and more. Filter by industry, type, or category and connect in a click."
+          />
+          <Shot
+            src={aiChatbot.url}
+            alt="ERRA AI Chatbot workspace"
+            title="AI Tools: Chatbot and Voice"
+            icon={Bot}
+            caption="Active conversations, response time, satisfaction rate, and configuration for training data, response templates, and connected channels."
+          />
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <Shot
+            src={billing.url}
+            alt="ERRA Billing and Subscription"
+            title="Billing and Subscription"
+            icon={ShieldCheck}
+            caption="Plan type, billing cycle, next billing date, payment method, and full payment history in one place."
+          />
+          <Shot
+            src={resourcesHub.url}
+            alt="ERRA Resources Hub"
+            title="Resources Hub"
+            icon={MessagesSquare}
+            caption="Getting Started guide, video tutorials, support chat, and a built-in referral program."
+          />
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Integrations() {
+  const platforms = [
+    "Instagram", "Google", "Facebook", "TikTok", "YouTube", "Threads",
+    "and 31 more",
+  ];
+  return (
+    <Section
+      id="integrations"
+      eyebrow="Integrations"
+      title="Connects to the platforms service businesses already use."
+      className="bg-muted/40"
+    >
+      <div className="flex flex-wrap gap-2">
+        {platforms.map((p) => (
+          <span
+            key={p}
+            className="inline-flex items-center rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground"
+          >
+            {p}
+          </span>
+        ))}
+      </div>
+      <p className="mt-6 text-sm text-muted-foreground max-w-2xl">
+        37 integrations across Social Media, Authentication, Payments, Scheduling, and Communications. Filter the full library inside the Integrations Hub.
       </p>
     </Section>
   );
 }
 
-/* ---------- Demo walkthrough ---------- */
-
-function DemoWalkthrough() {
-  const steps = [
-    { n: "01", title: "A message arrives", body: "A customer writes in from any supported channel. It lands in a single shared inbox, tagged with light context." },
-    { n: "02", title: "Context appears quietly", body: "A sidebar surfaces relevant history — past conversations, key moments, current status — without demanding attention." },
-    { n: "03", title: "The practitioner drafts", body: "The reply is written by a human. Optional assistance suggests a draft, tone check, or summary — always opt-in." },
-    { n: "04", title: "The workspace remembers", body: "The thread stays intact. The next practitioner picking it up sees the same clear story, not a wall of noise." },
-    { n: "05", title: "Signals feed back", body: "A small number of meaningful measurements help the team learn — no vanity dashboards." },
-  ];
-  return (
-    <Section
-      id="demo"
-      eyebrow="Demo walkthrough"
-      title="How a conversation flows through ERRA."
-      lead="A conceptual walkthrough of the intended experience."
-    >
-      <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {steps.map((s) => (
-          <li key={s.n} className="rounded-2xl border border-border p-6 gradient-card">
-            <div className="text-3xl font-bold gradient-text" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              {s.n}
-            </div>
-            <h3 className="mt-3 text-base font-semibold text-ink">{s.title}</h3>
-            <p className="mt-2 text-sm text-ink-soft leading-relaxed">{s.body}</p>
-          </li>
-        ))}
-      </ol>
-    </Section>
-  );
-}
-
-/* ---------- Architecture ---------- */
-
-function ArchitectureOverview() {
-  const layers = [
-    { name: "Client", desc: "Browser experience for practitioners and admins." },
-    { name: "Presentation", desc: "Composable UI surfaces and design system." },
-    { name: "Application", desc: "Business rules, workflows, and orchestration." },
-    { name: "Data", desc: "Structured records for people, conversations, and events." },
-    { name: "Integrations", desc: "External channels and thoughtful AI helpers." },
-  ];
-  return (
-    <Section
-      id="architecture"
-      eyebrow="Architecture overview"
-      title="A calm, layered system."
-      lead="A conceptual five-layer view. Vendors, endpoints, and schemas are intentionally omitted."
-      className="bg-surface-alt"
-    >
-      <div className="space-y-3">
-        {layers.map((l, i) => (
-          <div
-            key={l.name}
-            className="rounded-2xl border border-border bg-surface p-5 flex items-center gap-5 shadow-soft"
-            style={{
-              marginLeft: `${i * 12}px`,
-              marginRight: `${(layers.length - 1 - i) * 12}px`,
-            }}
-          >
-            <div className="h-10 w-10 rounded-xl grid place-items-center bg-brand-soft text-[color:var(--brand)] font-bold text-sm">
-              {String(i + 1).padStart(2, "0")}
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold text-ink">{l.name}</div>
-              <div className="text-xs text-ink-soft mt-0.5">{l.desc}</div>
-            </div>
-            <div className="hidden sm:block h-1.5 flex-1 rounded-full overflow-hidden bg-border">
-              <div className="h-full" style={{ width: `${(i + 1) * 18}%`, background: "var(--gradient-aurora)" }} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Stack ---------- */
-
-function TechnologyStack() {
-  const groups = [
-    { k: "Frontend", v: "Modern reactive framework" },
-    { k: "Styling", v: "Utility-first CSS system" },
-    { k: "State", v: "Server-cache + local state" },
-    { k: "Routing", v: "File-based, type-safe" },
-    { k: "Backend runtime", v: "Serverless functions" },
-    { k: "Data layer", v: "Relational store with row-level rules" },
-    { k: "Auth pattern", v: "Session-based with role separation" },
-    { k: "AI layer", v: "Optional, opt-in assistance" },
-  ];
-  return (
-    <Section
-      id="stack"
-      eyebrow="Technology stack"
-      title="Categories, not vendors."
-      lead="A high-level view of the shape of the system. Concrete providers and configuration live in the private repository."
-    >
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {groups.map((g) => (
-          <div key={g.k} className="rounded-xl border border-border p-4 bg-surface">
-            <div className="text-[10px] uppercase tracking-wider font-semibold text-[color:var(--brand)]">{g.k}</div>
-            <div className="mt-1.5 text-sm font-medium text-ink">{g.v}</div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- FAQ ---------- */
-
-function FAQ() {
-  const items = [
-    { q: "Is this the real ERRA product?", a: "No. This site is a public portfolio showcase of the concept, philosophy, and design language. The working product lives in a private repository." },
-    { q: "Can I try the app?", a: "Not from this page. If you're interested in early access to the working product, use the contributor request section below and we'll be in touch." },
-    { q: "Are the screenshots real?", a: "No. Every visual on this page is a stylized mock created specifically for this showcase." },
-    { q: "Is any private information published here?", a: "No. All content is derived from an approved public-safe export. Provider names, endpoints, schemas, credentials, and internal identifiers are intentionally excluded." },
-    { q: "How can I follow along?", a: "Watch this page, or reach out through the contact section. We'll share updates as the project matures." },
-    { q: "Can I contribute?", a: "Yes — the contributor request section explains what kinds of collaboration are welcome and how to start a conversation." },
-  ];
-  const [open, setOpen] = useState<number | null>(0);
-  return (
-    <Section
-      id="faq"
-      eyebrow="FAQ"
-      title="Questions people ask."
-      className="bg-surface-alt"
-    >
-      <div className="max-w-3xl mx-auto space-y-2">
-        {items.map((it, i) => (
-          <div key={i} className="rounded-2xl border border-border bg-surface overflow-hidden">
-            <button
-              onClick={() => setOpen(open === i ? null : i)}
-              className="w-full flex items-center justify-between text-left px-5 py-4 hover:bg-accent transition"
-            >
-              <span className="text-sm md:text-base font-semibold text-ink">{it.q}</span>
-              <ChevronDown className={`h-4 w-4 shrink-0 transition ${open === i ? "rotate-180" : ""}`} />
-            </button>
-            {open === i && (
-              <div className="px-5 pb-5 text-sm text-ink-soft leading-relaxed">{it.a}</div>
-            )}
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- About ---------- */
-
-function AboutTheProject() {
+function About() {
   return (
     <Section
       id="about"
-      eyebrow="About the project"
-      title="Where ERRA came from, and where it's going."
+      eyebrow="About"
+      title="Built for the operators actually running service businesses."
     >
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-4 text-ink-soft leading-relaxed">
+      <div className="grid md:grid-cols-2 gap-10 items-start">
+        <div className="space-y-5 text-muted-foreground leading-relaxed">
           <p>
-            ERRA started as a small experiment: what would a customer-experience workspace look like
-            if calmness were a first-class requirement? The idea grew into a working prototype and a
-            longer body of design writing.
+            ERRA is a live SaaS product available by invite. This page is a public
+            showcase of what it does and how it looks.
           </p>
           <p>
-            The production application is still evolving in a private repository. This showcase
-            captures the concept, feature philosophy, and architectural shape in a form that can be
-            shared openly — without exposing the working codebase.
-          </p>
-          <p className="text-xs italic">
-            This page is a portfolio artifact only. It does not represent a shipping product,
-            is not connected to any live system, and includes no reusable production code.
+            If you run a service-based business and want to see whether ERRA fits,
+            or if you're a design or engineering collaborator interested in the
+            product, reach out below.
           </p>
         </div>
-        <div className="rounded-2xl border border-border p-6 gradient-card">
-          <div className="text-sm font-semibold text-ink flex items-center gap-2">
-            <Rocket className="h-4 w-4 text-[color:var(--brand)]" /> Status
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Mail className="h-4 w-4 text-primary" /> Get in touch
           </div>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-soft">Stage</dt>
-              <dd className="mt-0.5 text-ink font-medium">Private prototype</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-soft">Showcase</dt>
-              <dd className="mt-0.5 text-ink font-medium">Public, static</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-soft">Contributions</dt>
-              <dd className="mt-0.5 text-ink font-medium">Open, by request</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Contact ---------- */
-
-function Contact() {
-  return (
-    <Section
-      id="contact"
-      eyebrow="Contact"
-      title="Reach out."
-      lead="This is a static page — no forms, no tracking. Use the links below to start a conversation."
-      className="bg-surface-alt"
-    >
-      <div className="grid sm:grid-cols-3 gap-4 max-w-3xl">
-        {[
-          { icon: Mail, label: "Email", value: "hello@example.com", href: "mailto:hello@example.com" },
-          { icon: Github, label: "GitHub", value: "your-handle", href: "#" },
-          { icon: Linkedin, label: "LinkedIn", value: "your-profile", href: "#" },
-        ].map((c) => (
           <a
-            key={c.label}
-            href={c.href}
-            className="group rounded-2xl border border-border p-5 bg-surface hover:shadow-elegant transition flex items-start gap-4"
+            href="mailto:hello@erra.app"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition"
           >
-            <div className="h-10 w-10 rounded-xl grid place-items-center bg-brand-soft text-[color:var(--brand)]">
-              <c.icon className="h-5 w-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs uppercase tracking-wider text-ink-soft">{c.label}</div>
-              <div className="mt-0.5 text-sm font-semibold text-ink truncate">{c.value}</div>
-            </div>
-            <ExternalLink className="h-4 w-4 text-ink-soft opacity-0 group-hover:opacity-100 transition ml-auto" />
+            hello@erra.app <ArrowRight className="h-3.5 w-3.5" />
           </a>
-        ))}
-      </div>
-      <p className="mt-6 text-xs text-ink-soft">Replace the placeholder links above with your real handles before publishing.</p>
-    </Section>
-  );
-}
-
-/* ---------- Contributor request ---------- */
-
-function ContributorRequest() {
-  const roles = [
-    { icon: Wand2, title: "Designers", body: "Interaction, motion, and system design that keeps things quiet." },
-    { icon: Puzzle, title: "Engineers", body: "Frontend, backend, or full-stack — comfortable with modern web tooling." },
-    { icon: Users, title: "Practitioners", body: "Support and CX leads who can shape what actually matters." },
-  ];
-  return (
-    <Section
-      id="contributor"
-      eyebrow="Contributor request"
-      title="Help shape a calmer workspace."
-      lead="ERRA is small on purpose. If the philosophy resonates and you'd like to contribute time, ideas, or feedback — we'd love to hear from you."
-    >
-      <div className="grid md:grid-cols-3 gap-4 mb-8">
-        {roles.map((r) => (
-          <div key={r.title} className="rounded-2xl border border-border p-6 bg-surface">
-            <div className="h-10 w-10 rounded-xl grid place-items-center bg-brand-soft text-[color:var(--brand)]">
-              <r.icon className="h-5 w-5" />
-            </div>
-            <h3 className="mt-4 text-base font-semibold text-ink">{r.title}</h3>
-            <p className="mt-2 text-sm text-ink-soft leading-relaxed">{r.body}</p>
-          </div>
-        ))}
-      </div>
-      <div className="rounded-3xl p-8 md:p-12 gradient-card border border-border shadow-elegant flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
-        <div>
-          <h3 className="text-2xl md:text-3xl font-bold text-ink">Start a conversation.</h3>
-          <p className="mt-2 text-sm text-ink-soft max-w-xl">
-            Send a short note about what draws you to the project. There's no application form —
-            just a real reply.
+          <p className="mt-4 text-xs text-muted-foreground">
+            Replace with your preferred contact address.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <a
-            href="mailto:hello@example.com"
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand)] text-primary-foreground px-6 py-3 text-sm font-semibold hover:opacity-90 transition"
-          >
-            <Mail className="h-4 w-4" /> Email
-          </a>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-6 py-3 text-sm font-semibold hover:bg-accent transition"
-          >
-            <Github className="h-4 w-4" /> GitHub
-          </a>
-        </div>
       </div>
     </Section>
   );
 }
-
-/* ---------- Footer ---------- */
 
 function Footer() {
   return (
-    <footer className="border-t border-border bg-surface-alt">
-      <div className="mx-auto max-w-7xl px-4 py-12 grid gap-8 md:grid-cols-3">
+    <footer className="border-t border-border py-10">
+      <div className="mx-auto max-w-7xl px-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-sm text-muted-foreground">
         <div>
-          <Wordmark />
-          <p className="mt-4 text-xs text-ink-soft leading-relaxed max-w-sm">
-            ERRA is a conceptual customer-experience platform. This site is a public showcase only —
-            not the production source code, and not connected to any live system.
-          </p>
+          <span className="font-semibold text-foreground">ERRA</span> &copy; {new Date().getFullYear()}
         </div>
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-ink-soft">Explore</div>
-          <ul className="mt-3 space-y-1.5 text-sm">
-            {NAV.slice(0, 5).map((n) => (
-              <li key={n.href}><a href={n.href} className="text-ink hover:text-[color:var(--brand)] transition">{n.label}</a></li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-ink-soft">More</div>
-          <ul className="mt-3 space-y-1.5 text-sm">
-            {NAV.slice(5).map((n) => (
-              <li key={n.href}><a href={n.href} className="text-ink hover:text-[color:var(--brand)] transition">{n.label}</a></li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-ink-soft">
-          <div>© {new Date().getFullYear()} ERRA — Public showcase.</div>
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            Not the production source code · Mock visuals only
-          </div>
-        </div>
+        <div>Public product showcase. Screens shown are the real product.</div>
       </div>
     </footer>
   );
