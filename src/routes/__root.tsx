@@ -70,8 +70,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const SITE_TITLE = "ERRA — Public Showcase";
-const SITE_DESC = "A public portfolio showcase of ERRA, a conceptual customer-experience platform. This site is not the production application.";
+const SITE_TITLE = "ERRA. Automation for service-based businesses.";
+const SITE_DESC = "ERRA is an automation platform for service-based businesses. Client intake, follow-ups, reviews, chatbot, voice AI, and 37 integrations from one dashboard. Public product showcase.";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
