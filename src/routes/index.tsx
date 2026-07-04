@@ -260,6 +260,12 @@ function Contact() {
         >
           <Mail className="h-4 w-4" /> Request access
         </a>
+        <p className="mt-6 text-sm text-muted-foreground">
+          <a href={CONTACT} className="font-medium text-foreground transition hover:text-primary">{EMAIL}</a>
+        </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Find us <span className="font-medium text-foreground">{HANDLE}</span> on Instagram, TikTok, and X.
+        </p>
       </div>
     </section>
   );
