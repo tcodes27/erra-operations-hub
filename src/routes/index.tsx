@@ -43,11 +43,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import logoAsset from "@/assets/erra-logo.png.asset.json";
-import dashboardAsset from "@/assets/erra-dashboard.png.asset.json";
-import requestsActiveAsset from "@/assets/erra-requests-active.png.asset.json";
-import requestsUpcomingAsset from "@/assets/erra-requests-upcoming.png.asset.json";
-import submitRequestAsset from "@/assets/erra-submit-request.png.asset.json";
+const logoAsset = { url: "/logo.png" };
+const dashboardAsset = { url: "/screenshots/dashboard.png" };
+const requestsActiveAsset = { url: "/screenshots/requests-active.png" };
+const requestsUpcomingAsset = { url: "/screenshots/requests-upcoming.png" };
+const submitRequestAsset = { url: "/screenshots/submit-request.png" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
