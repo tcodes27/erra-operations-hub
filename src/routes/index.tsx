@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Mail } from "lucide-react";
 
+import logoAsset from "@/assets/erra-logo.png.asset.json";
 import dashboardAsset from "@/assets/erra-dashboard.png.asset.json";
 import requestsActiveAsset from "@/assets/erra-requests-active.png.asset.json";
 import requestsUpcomingAsset from "@/assets/erra-requests-upcoming.png.asset.json";
@@ -29,8 +30,8 @@ function BrowserFrame({ src, alt }: { src: string; alt: string }) {
 
 function Wordmark() {
   return (
-    <a href="#top" className="text-2xl font-bold tracking-tight text-primary">
-      ERRA
+    <a href="#top" className="flex items-center" aria-label="ERRA home">
+      <img src={logoAsset.url} alt="ERRA" className="h-8 w-auto md:h-10" />
     </a>
   );
 }
