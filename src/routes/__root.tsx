@@ -70,8 +70,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const SITE_TITLE = "ERRA. Automation for service-based businesses.";
-const SITE_DESC = "ERRA is an automation platform for service-based businesses. Client intake, follow-ups, reviews, chatbot, voice AI, and 37 integrations from one dashboard. Public product showcase.";
+const SITE_TITLE = "ERRA. Your business, running smoothly.";
+const SITE_DESC = "ERRA is an automation platform for service based businesses. Submit a request, we build the workflow, your business keeps moving.";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
