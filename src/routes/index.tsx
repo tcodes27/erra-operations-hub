@@ -10,7 +10,9 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const CONTACT = "mailto:hello@erra.app";
+const EMAIL = "tierrabcodes@gmail.com";
+const HANDLE = "@tcodes27";
+const CONTACT = `mailto:${EMAIL}`;
 
 function BrowserFrame({ src, alt }: { src: string; alt: string }) {
   return (
