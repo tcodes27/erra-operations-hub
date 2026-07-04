@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/components/site/theme-provider";
 
 import logoAsset from "@/assets/erra-logo.png.asset.json";
 import dashboardAsset from "@/assets/erra-dashboard.png.asset.json";
@@ -36,6 +37,21 @@ function Wordmark() {
   );
 }
 
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  const isDark = theme === "dark";
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition hover:text-foreground"
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  );
+}
+
 function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -47,12 +63,15 @@ function Header() {
           <a href="#features" className="transition hover:text-foreground">Features</a>
           <a href="#contact" className="transition hover:text-foreground">Contact</a>
         </nav>
-        <a
-          href={CONTACT}
-          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
-        >
-          Request access <ArrowRight className="h-3.5 w-3.5" />
-        </a>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <a
+            href={CONTACT}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+          >
+            Request access <ArrowRight className="h-3.5 w-3.5" />
+          </a>
+        </div>
       </div>
     </header>
   );
