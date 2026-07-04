@@ -1,59 +1,91 @@
-## ERRA Style Guide Handoff + Retheme
+## Rebuild the showcase around real ERRA
 
-Two deliverables in one pass: a self-contained style-guide doc, and a retheme of this showcase to match the ERRA visual system exactly.
+Throw out the invented mock frames. The 9 uploaded screenshots become the source of truth for what the page shows and what the copy says. No em-dashes anywhere (I'll sweep the whole project). No fabricated UI, no "conceptual platform" hedging.
 
-### 1. New file — `STYLE_GUIDE.md` (project root)
+### What ERRA actually is (from the screenshots)
 
-Single markdown doc containing:
-- Brand notes (name, tagline, logo/favicon guidance — note the PNG is not included; user must export from the private app)
-- Typography rules (Inter 300–700, load via Google Fonts `<link>`, tailwind `fontFamily.sans`)
-- Full HSL + hex color token tables (light + dark) as provided
-- Chart palette
-- Radius, shadow, theme system, icon set, component library notes
-- Layout patterns (sticky nav, containers, mobile scroll strip, `.scrollbar-hide`)
-- Keyframes (`accordion-down/up`, `fall`)
-- **Ready-to-paste snippets**, verbatim:
-  - `index.html` `<head>` block (fonts + title + description)
-  - `index.css` `:root` + `.dark` token blocks (HSL form)
-  - `tailwind.config.ts` fragment (darkMode, fontFamily, colors mapped to CSS vars, borderRadius, keyframes, `.scrollbar-hide` utility)
-- Short "how to apply in a Vite + shadcn project" checklist
+An automation platform for service-based businesses. The product has a clear surface area, visible across the 9 screenshots:
 
-Doc is self-contained — a reader can paste it into a fresh project and reproduce the look without visiting this repo.
+1. **Requests Hub** (kanban: Active / Waiting on Review / Approved & Signed Off) with a conversation drawer per request.
+2. **Automation Library** (246 prebuilt automations, tagged Communication / Retention / Lead Gen, delivered via SMS / Email / Chatbot / AI). Each automation opens a modal showing the full trigger, action, follow-up, review request, re-engagement sequence, plus a "How This Helps Your Business" panel with a conversion goal.
+3. **Integrations Hub** (37 platforms, filterable by industry / type / category). Instagram, Google, Facebook, TikTok, YouTube, Threads, etc.
+4. **AI Tools** (Chatbot + Voice AI submenu). Chatbot page shows active conversations, response time, satisfaction rate, and chatbot configuration (training data, response templates, integration channels).
+5. **Reports & Metrics** dashboard (Total / Active / Completed / Backlog counts, Top Request Type, Service Performance, Activity Trend, Performance Overview chart with week/month/quarter/year toggle).
+6. **Account & Resources** (Billing & Subscription with plan/cycle/next billing date/payment method/history; Resources Hub with Getting Started, Video Tutorials, Support Chat, Refer a Friend).
 
-### 2. Retheme this showcase to match
+Top nav across every screen: Dashboard, Requests Hub, Automation Library, AI Tools, Account & Resources, with a notification bell, theme toggle, and Sign Out.
 
-Only presentation layer changes. No new sections, no content changes, no logic changes.
+### 1. Upload the 9 screenshots as CDN assets
 
-- **`src/styles.css`**
-  - Replace current oklch teal/aurora tokens with the ERRA HSL tokens (light `:root` + `.dark`) exactly as specified
-  - `--radius: 1rem`
-  - Keep semantic mapping under `@theme inline` so all existing components pick up the new palette automatically
-  - Update `--font-sans` to `"Inter", sans-serif`; remove `Space Grotesk` display font and the `--font-display` token (headings will use Inter too, per ERRA)
-  - Replace `--gradient-aurora` / `--gradient-hero` / `--gradient-card` with subtle teal→cyan and warm-sand tints built from the new tokens (kept minimal — ERRA itself uses flat surfaces + soft shadows, not heavy gradients)
-  - Keep utility classes (`gradient-text`, `surface-glass`, `shadow-elegant`, `mock-badge`) but recolored to new tokens
-  - Add `.scrollbar-hide` utility
+Use the sandbox `lovable-assets` CLI on each `/mnt/user-uploads/Screenshot_*.png` and write `src/assets/erra-<slug>.png.asset.json` for each. Slugs:
 
-- **`src/routes/__root.tsx`**
-  - Swap Google Fonts link to Inter `300;400;500;600;700` only (drop Space Grotesk)
-  - Leave SEO/meta as-is (this is still the showcase, not the real product — do NOT adopt the real ERRA title/description, since the showcase disclaimer requires it stay clearly a showcase)
+- `erra-requests-hub` (kanban + conversation drawer)
+- `erra-integrations-hub`
+- `erra-ai-chatbot` (with AI Tools dropdown open)
+- `erra-resources-hub`
+- `erra-billing`
+- `erra-reports-metrics`
+- `erra-automation-modal-benefit` (How This Helps)
+- `erra-automation-modal-sequence` (Botox Touch-Up Due sequence)
+- `erra-automation-library` (246 automations grid)
 
-- **Section components** — no structural edits. Verify hero, nav, cards, and mock frames still read well against the new palette; adjust only inline utility classes if contrast breaks (e.g. swap a hardcoded gradient reference to the new token). No content rewrites.
+Screenshots are used as-is (they already anonymize / show generic client data). No blurring pass this round.
 
-### Constraints preserved
+### 2. Restructure the showcase page
 
-- Still a static showcase — no backend, no forms, no real ERRA screenshots, mock-badge visuals only
-- Disclaimers in TopRibbon / About / Footer stay
-- No provider names, schemas, secrets, or production code
-- Logo PNG NOT added (user must export from private app); favicon stays default until they provide one
+Replace the current invented mock layout in `src/routes/index.tsx` with a section stack driven by the real screenshots:
 
-### Verification
+1. **Top ribbon**: keep, retitle to "Portfolio showcase of ERRA, a live SaaS product. Screens shown are the real product." Remove any "conceptual" wording.
+2. **Hero**: name + tagline "Your business, running smoothly." One-paragraph explainer: ERRA is an automation platform for service-based businesses (studios, clinics, agencies, med-spas, salons). It handles client intake, follow-ups, reviews, re-engagement, chatbot + voice AI, and 37 platform integrations from one dashboard. CTA row: "See the product" (scrolls to gallery), "Get in touch" (mailto placeholder).
+3. **What it is**: 3 short pillars pulled from the screenshots, no em-dashes:
+   - Prebuilt automation library (246 flows, SMS + Email + Chatbot + AI)
+   - Client Requests Hub (kanban + conversation, so nothing gets dropped)
+   - AI Tools (chatbot and voice AI trained on your business)
+4. **How it works** (simple 4-step strip, not a fake diagram):
+   1. Client triggers an event (books, submits form, IG DM, missed appt).
+   2. ERRA runs the matching automation from the library.
+   3. Follow-up, review request, re-engagement happen automatically.
+   4. Everything lands in the Requests Hub with full conversation history.
+5. **Product tour** (the main section): 6 titled screenshot cards, one per real screen, in a responsive 2-column layout. Each card = large screenshot + short caption naming the surface and what the operator does there.
+   - Reports & Metrics dashboard
+   - Requests Hub with conversation
+   - Automation Library (246 flows)
+   - Automation detail (sequence + business impact)
+   - Integrations Hub (37 platforms)
+   - AI Chatbot workspace
+   - Billing and Resources (two small tiles sharing one row)
+6. **Integrations strip**: text-only chip list of the platform names visible in the Integrations Hub screenshot (Instagram, Google, Facebook, TikTok, YouTube, Threads, plus "and 31 more"). No third-party logos.
+7. **About / contact**: short bio (founder-built, service-business focus), one contact link, note that ERRA is a live SaaS available by invite, this page is a public showcase.
+8. **Footer**: minimal, product name + year + showcase disclaimer.
 
-- Build passes
-- Playwright screenshot at 1280×1800 of hero + gallery to confirm teal `#00A3B3` primary, `#1F2033` text, `#DDBB8F` accent, 1rem rounded corners, Inter throughout
-- Dark mode toggle still works with new dark tokens
+Remove all existing invented UI mocks (fake dashboards, fake cards, fake chart SVGs). Delete unused section components introduced in the previous pass.
 
-### Post-build summary
+### 3. Copy pass: remove every em-dash
 
-- Files created / edited
-- Confirmation that colors, radius, and font match the spec
-- Placeholders remaining: logo PNG, favicon, contact email, social links
+Sweep the whole project (`src/**`, `STYLE_GUIDE.md`, `.lovable/plan.md`, `src/routes/__root.tsx`) and replace every em-dash (`—`) and en-dash used as punctuation (`–`) with either a period, comma, colon, or the word "to" depending on context. Numeric ranges like "24 to 48 hours" spelled out. Verify with a repo-wide search that returns zero matches before finishing.
+
+### 4. Metadata
+
+Update `src/routes/__root.tsx` head to:
+- title: "ERRA. Automation for service-based businesses."
+- description: "ERRA is an automation platform for service-based businesses. Client intake, follow-ups, reviews, chatbot, voice AI, and 37 integrations from one dashboard. Public showcase."
+- og:title / og:description match.
+- og:image left unset (no meaningful hero image beyond the product screenshots, which are not safe as an OG since they contain UI-only detail).
+
+### 5. Verify
+
+- Playwright at 1280x1800 captures the full page, then a second pass at 390x844 for mobile. Confirm every screenshot loads (CDN URL, not 404), captions render, no em-dashes visible.
+- Repo grep for `—` and `–` returns zero.
+- Build passes.
+
+### Not doing this round
+
+- No screenshot blurring or redaction.
+- No real ERRA logo (still need the PNG from you; keeps the wordmark "ERRA" text-only for now).
+- No backend, no forms, no email capture.
+- No integration logos (name-only chips).
+
+### What I still need from you (only if you want changes to the above)
+
+- Contact email or link to use in About / footer (otherwise I leave a `mailto:` placeholder).
+- Confirmation the 9 screenshots are OK to publish as-is, or a list of any you want swapped out.
